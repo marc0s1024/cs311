@@ -9,11 +9,7 @@ using namespace std;
 int main()
 {
     // Prints hello world
-<<<<<<< HEAD
-    cout << "Hello World" << endl;
-=======
     cout << "Hello there" << endl << "General Kenobi" << endl;
->>>>>>> main
  
     return 0;
 }
