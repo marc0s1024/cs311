@@ -3,6 +3,11 @@
 #include <stdio.h>
 #include <assert.h>
 
+// I used a struct to store the current bin number and when it was last accessed
+// for a least recently used algorithm. The workbench was defined to be an array of 5 bins.
+// From there, functions were implemented to check if a bin is on the workbench and if not, 
+// remove the least recently used bin and fetch a new bin.
+
 #define WORKBENCH_SIZE 5
 
 // Bin struct to keep track of bin number and when last accessed
