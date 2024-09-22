@@ -13,47 +13,47 @@
 // Bin struct to keep track of bin number and when last accessed
 struct Bin {
 	int binNum;
-	int timeLastAccessed; // Least recently used
+	int lastAccessed; // Least recently used
 };
 
-struct Bin workbench[WORKBENCH_SIZE]; // init workbench
+struct Bin workbench[WORKBENCH_SIZE]; // init workbench with max 5 bins
 int currentUse = 0; // incremented when a bin is accessed
 
 // determine which bin was least recently used
-int findBinToEvict() {
+int findBinToRemove() {
 	int leastRecentlyUsed = currentUse;
-	int binToEvict = 0;
+	int binToRemove = 0;
 
 	// iterate through workbench to find least recently used bin
 	for(int i = 0; i < WORKBENCH_SIZE; i++) {
-		if(workbench[i].timeLastAccessed < leastRecentlyUsed) {
-			leastRecentlyUsed = workbench[i].timeLastAccessed;
-			binToEvict = i;
+		if(workbench[i].lastAccessed < leastRecentlyUsed) {
+			leastRecentlyUsed = workbench[i].lastAccessed;
+			binToRemove = i;
 		}
 	}
 
-	return binToEvict;
+	return binToRemove;
 }
 
 // fetch a bin and update when last accessed
 void accessBin(int binNum) {
+	int binToRemove = findBinToRemove();
 	currentUse++; // increment current use
 
 	// check if bin is on workbench, if so then update timeLastAccessed and return
 	for(int i = 0; i < WORKBENCH_SIZE; i++) {
 		if(workbench[i].binNum == binNum) {
-			workbench[i].timeLastAccessed = currentUse;
+			workbench[i].lastAccessed = currentUse;
 			return;
 		}
 	}
 
-	// if bin not on workbench, evict least recently used bin and fetch new bin
-	int binToEvict = findBinToEvict();
-	fetchBin(binNum, binToEvict);
+	// if bin not on workbench, remove least recently used bin and fetch new bin
+	fetchBin(binNum, binToRemove); // from bench.c
 
 	// update workbench with new bin
-	workbench[binToEvict].binNum = binNum;
-	workbench[binToEvict].timeLastAccessed = currentUse;
+	workbench[binToRemove].binNum = binNum;
+	workbench[binToRemove].lastAccessed = currentUse;
 }
 
 int main(int argc, char **argv) {
