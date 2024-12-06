@@ -1,12 +1,3 @@
-// test.c
-
-#include <stdio.h>
-#include <unistd.h>     // pipe fork close
-#include <string.h>
-#include <sys/types.h>  // pid_t
-#include <stdlib.h>     // exit
-#include <sys/wait.h>   // wait
-
 #include "piped.h"
 
 int main() {
@@ -30,12 +21,11 @@ int main() {
 
     if (pid > 0) {
         // parent Process
-        // close unused pipe ends
-        close(parent_to_child[0]); // close read end of parent-to-child pipe
-        close(child_to_parent[1]); // close write end of child-to-parent pipe
+        close(parent_to_child[0]); // close unused read end of parent-to-child pipe
+        close(child_to_parent[1]); // close unused write end of child-to-parent pipe
 
         // write message to child
-        strcpy(msg, "Hello from parent");
+        strcpy(msg, "Hi from parent");
         piped(msg, 1, parent_to_child[1]); // Mode 1: Write to child
         printf("Parent sent: %s\n", msg);
 
@@ -63,7 +53,7 @@ int main() {
         printf("Child received: %s\n", msg);
 
         // write message to parent
-        strcpy(msg, "Hello from child");
+        strcpy(msg, "Hi from child");
         piped(msg, 3, child_to_parent[1]); // Mode 3: Write to parent
         printf("Child sent: %s\n", msg);
 
